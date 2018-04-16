@@ -157,8 +157,8 @@ contract('Payroll', function(accounts) {
 
             //console.log("BURN RATES", token1burnrate, token2burnrate);
 
-            assert.equal(670000000000000000000, burnrates[1].toNumber(), "wrong burn rate for token 1");
-            assert.equal(558000000000000000000, burnrates[2].toNumber(), "wrong burn rate for token 2");
+            assert.equal(670684931506849315068, burnrates[1].toNumber(), "wrong burn rate for token 1");
+            assert.equal(558904109589041095890, burnrates[2].toNumber(), "wrong burn rate for token 2");
 
             return payroll.calculatePayrollRunway.call();
         }).then(function(runway){
@@ -201,7 +201,7 @@ contract('Payroll', function(accounts) {
         }).then(function(balance){
 
             expectedbalance2 = (employeeSalary/12) * (token2percentage/100) * (1/fromWei(token2price));
-            //console.log("EXPECTED TOKEN 2 BALANCE", expectedbalance)
+            //console.log("EXPECTED TOKEN 2 BALANCE", expectedbalance2)
             //console.log("EMPLOYEE TOKEN 2 BALANCE", balance.toNumber());
 
             assert.equal(expectedbalance2, balance.toNumber(), "token 2 balance wrong after payday");

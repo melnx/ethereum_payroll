@@ -375,9 +375,7 @@ contract Payroll is PayrollInterface {
                 //calculate daily payment to this user in the token
                 uint dailyEUR = employee.yearlyEURSalary.div(365);
                 uint EURAllocatedForToken = (dailyEUR.mul(percentage)).div(100);
-                uint dailyTokenAmount = EURAllocatedForToken.div( tokenExchangeRate ).mul( 10 ** decimals ); //.mul(oneEUR.div(tokenExchangeRate);
-
-
+                uint dailyTokenAmount = EURAllocatedForToken.mul( 10 ** decimals ).div( tokenExchangeRate ); //.mul(oneEUR.div(tokenExchangeRate);
 
                 //add token daily amount for this user to total daily token burn rate
                 tokenAmountRequired = tokenAmountRequired.add(dailyTokenAmount);
@@ -510,7 +508,7 @@ contract Payroll is PayrollInterface {
             uint percentage = distribution[i];
             uint tokenExchangeRate = EURExchangeRates[token];
             uint EURAllocatedForToken = (monthlyEUR.mul(percentage)).div(100);
-            uint monthlyTokenAmount = EURAllocatedForToken.div(tokenExchangeRate).mul( 10 ** decimals );
+            uint monthlyTokenAmount = EURAllocatedForToken.mul( 10 ** decimals ).div(tokenExchangeRate);
 
             if(token == ethAddress){
                 msg.sender.transfer(monthlyTokenAmount);
