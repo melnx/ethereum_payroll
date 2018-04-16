@@ -287,6 +287,7 @@ contract Payroll is PayrollInterface {
         //transfer back all the tokens to the owner and unregister them
         for(uint i = 0; i<tokens.length; i++){
             address token = tokens[i];
+            if(token == ethAddress) continue;
             ERC20 erc20 = ERC20(token);
             erc20.transfer(owner, erc20.balanceOf(this));
             delete tokenDeposited[token];
