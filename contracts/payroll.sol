@@ -32,7 +32,7 @@ contract PayrollInterface {
     function getAllocationForEmployee(uint employeeId) public view returns (address[], uint[]);
 
     /* ORACLE ONLY */
-    function setExchangeRate(address token, uint256 EURExchangeRate) public; // uses decimals from token
+    function setExchangeRate(address token, uint256 EURExchangeRate) public; // uses price in EUR wei
     function setExchangeRates(address[] tokens, uint256[] EURExchangeRate) public; // set multiple token exchange rates
 }
 
@@ -448,7 +448,7 @@ contract Payroll is PayrollInterface {
      */
     function determineAllocation(address[] distributionTokens, uint256[] distribution) public onlyEmployee {
         require(distributionTokens.length == distribution.length);
-        //require(now - lastAllocationUpdate[msg.sender] < 6 * 30 days );
+        require(lastAllocationUpdate[msg.sender] == 0 || now - lastAllocationUpdate[msg.sender] < 6 * 30 days );
 
         Employee storage employee = employees[employeeAddressToId[msg.sender]-1];
 
@@ -487,7 +487,7 @@ contract Payroll is PayrollInterface {
     function payday() public onlyEmployee {
 
         require(employeeAddressToId[msg.sender] != 0);
-        //require(now - lastPayday[msg.sender] < 30 days);
+        require(lastPayday[msg.sender]  == 0 || now - lastPayday[msg.sender] < 30 days);
 
         Employee storage employee = employees[employeeAddressToId[msg.sender]-1];
 
@@ -518,6 +518,8 @@ contract Payroll is PayrollInterface {
 
             amountsTransferred[i] = monthlyTokenAmount;
         }
+
+        lastPayday[msg.sender] = now;
 
         emit Payday(msg.sender, distributionTokens, amountsTransferred);
     }
