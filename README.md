@@ -1,8 +1,10 @@
 # Payroll
 
-# compile / test
+## compile / test
 
-go to the root project directory
+the truffle test suite tests the basic workflow of the payroll contract
+
+##### to run it, go to the root project directory
 
 in one console window run the truffle test EVM
 ```
@@ -45,7 +47,7 @@ Using network 'development'.
   11 passing (3s)
 ``` 
 
-# smart contract
+## smart contract
 
 ```solidity
 contract PayrollInterface {
@@ -88,11 +90,11 @@ There are 3 tiers of users: `owner` the contract creator, `employee` get paid in
 
 ## Owner
 
-##### setOracle
+#### setOracle
 `setOracle(address owner)` used to set the oracle address, this allows another
 Ethereum account to set exchange rates (token prices) in the payroll contract
 
-##### addEmployee
+#### addEmployee
 `addEmployee(address accountAddress, address[] allowedTokens, uint256 initialYearlyEURSalary)`
 adds an employee with the ETH address `accountAddress` allowed tokens `allowedTokens`
 and initial yearly salary of `initialYearlyEURSalary` 
@@ -106,29 +108,29 @@ you can retrieve employees via `getEmployee(employeeId)`
 you can remove employees by calling `removeEmployee(employeeId)` employeeId is 1-indexed
 (i.e. the first user has user id of `1`)
 
-##### addFunds
+#### addFunds
 `addFunds() payable` call this with an ETH value to deposit ETH directly
 
-##### addTokenFunds
+#### addTokenFunds
 `addTokenFunds(address token, uint256 amount)` the owner must first `approve()` the token funds
 for the payroll contract so that there's sufficient allowance for the payroll contract 
 to call `transferFrom()`
  
-##### calculatePayrollBurnrate
+#### calculatePayrollBurnrate
 `calculatePayrollBurnrate()` calculates how much EUR is required every month 
 to pay all the employees, with 18 decimals (multiplied by 10^18)
 
-##### calculatePayrollRunway
+#### calculatePayrollRunway
 `calculatePayrollRunway()` tells you which token will run out the soonest, 
 returns the token address and the number of days it will be depleted in 
  
-##### scapeHatch
+#### scapeHatch
 `scapeHatch()` drains all funds (tokens and ETH) from the payroll contract and returns them
 to the owner. 
  
 ## Oracle
 
-##### setExchangeRate
+#### setExchangeRate
 `setExchangeRate(address token, uint EURExchangeRate)` 
 is used to set the token prices,
  
@@ -142,14 +144,14 @@ set token prices in batches
 
 ## Employee
 
-##### determineAllocation
+#### determineAllocation
 `determineAllocation(address[] tokens, uint256[] distribution)` tokens are token addresses
 distribution is an array of integers that represent percentages.  They must range between
 1-100 and have a sum of 100
 
 to allocate being paid in ETH use the address `0x0000000000000000000000000000000000000000`
 
-##### payday
+#### payday
 `payday()` the employee can call this every 30 days to get paid 1/12 of their yearly salary
 they get transferred tokens based on their allocation percentage. 
 
